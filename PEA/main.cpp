@@ -94,6 +94,7 @@ int main(int argc, const char * argv[]) {
         state = new Cities(file->getMatrix());
     }
     
+    
     bool menu = true;
     
     while (menu) {
@@ -117,46 +118,92 @@ int main(int argc, const char * argv[]) {
             case 3:
             {
                 double temp = 10000;
-                double coolRate = 0.000001;
+                double coolRate = 0.0001;
+                
                 cout << endl << "Starting temperature is " << temp << endl;
                 cout << "Cooling Rate is " << 1-coolRate << endl;
-                int sizeOfState = state->getSize();
                 
-                Path *currentPath = new Path(state->getCities());
-                
-                cout << "Current distance is : \t" << to_string((int)currentPath->calculate()) << endl;
-                
-                Path *bestPath = new Path(currentPath->getVector());
-                bestPath->calculate();
-                
-                while (temp > 1)
+                if (tsp)
                 {
-                    Path *newPath = new Path(currentPath->getVector());
+                    int sizeOfState = state->getSize();
                     
-                    int position1 = (int) (rand() % sizeOfState);
-                    int position2 = (int) (rand() % sizeOfState);
+                    Path *currentPath = new Path(state->getCities());
                     
-                    newPath->swap(position1, position2);
+                    cout << "Current distance is : \t" << to_string((int)currentPath->calculate()) << endl;
                     
-                    int currentEnergy = currentPath->calculate();
-                    int neighbourEnergy = newPath->calculate();
+                    Path *bestPath = new Path(currentPath->getVector());
+                    bestPath->calculate();
                     
-                    if (decide(currentEnergy, neighbourEnergy, temp) > (double)((rand() % 101 )* 0.01)) {
-                        delete currentPath;
-                        currentPath = new Path(newPath->getVector(), newPath->getDistance());
+                    while (temp > 1)
+                    {
+                        Path *newPath = new Path(currentPath->getVector());
+                        
+                        int position1 = (int) (rand() % sizeOfState);
+                        int position2 = (int) (rand() % sizeOfState);
+                        
+                        newPath->swap(position1, position2);
+                        
+                        int currentEnergy = currentPath->calculate();
+                        int neighbourEnergy = newPath->calculate();
+                        
+                        if (decide(currentEnergy, neighbourEnergy, temp) > (double)((rand() % 101 )* 0.01)) {
+                            delete currentPath;
+                            currentPath = new Path(newPath->getVector(), newPath->getDistance());
+                        }
+                        
+                        if (currentPath->getDistance() < bestPath->getDistance()) {
+                            delete bestPath;
+                            bestPath = new Path(currentPath->getVector(), currentPath->getDistance());
+                        }
+                        delete newPath;
+                        temp *= 1 - coolRate;
+                        
                     }
-                    
-                    if (currentPath->getDistance() < bestPath->getDistance()) {
-                        delete bestPath;
-                        bestPath = new Path(currentPath->getVector(), currentPath->getDistance());
-                    }
-                    delete newPath;
-                    temp *= 1 - coolRate;
+                    cout << "Best distance is : \t\t" << bestPath->getDistance() << endl;
+                    delete bestPath;
+                    delete currentPath;
 
                 }
-                cout << "Best distance is : \t\t" << bestPath->getDistance() << endl;
-                delete bestPath;
-                delete currentPath;
+                else
+                {
+                    int sizeOfState = file->getDimension();
+                    
+                    Path *currentPath = new Path(sizeOfState);
+                    
+                    cout << "Current distance is : \t" << to_string((int)currentPath->calculateA(state->getMatrix())) << endl;
+                    
+                    Path *bestPath = new Path(currentPath->getPath());
+                    bestPath->calculateA(state->getMatrix());
+                    
+                    while (temp > 1)
+                    {
+                        Path *newPath = new Path(currentPath->getPath());
+                        
+                        int position1 = (int) (rand() % sizeOfState);
+                        int position2 = (int) (rand() % sizeOfState);
+                        
+                        newPath->swapA(position1, position2);
+                        
+                        int currentEnergy = currentPath->calculateA(state->getMatrix());
+                        int neighbourEnergy = newPath->calculateA(state->getMatrix());
+                        
+                        if (decide(currentEnergy, neighbourEnergy, temp) > (double)((rand() % 101 )* 0.01)) {
+                            delete currentPath;
+                            currentPath = new Path(newPath->getPath(), newPath->getDistance());
+                        }
+                        
+                        if (currentPath->getDistance() < bestPath->getDistance()) {
+                            delete bestPath;
+                            bestPath = new Path(currentPath->getPath(), currentPath->getDistance());
+                        }
+                        delete newPath;
+                        temp *= 1 - coolRate;
+                        
+                    }
+                    cout << "Best distance is : \t\t" << bestPath->getDistance() << endl;
+                    delete bestPath;
+                    delete currentPath;
+                }
             }
                 break;
             

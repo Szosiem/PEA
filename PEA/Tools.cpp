@@ -77,10 +77,13 @@ int Tools::readFile()
         }
         else
         {
-            matrix = new int*[dimension];
+            
+            matrix.resize(dimension);
+            for ( int i = 0 ; i < dimension ; i++ )
+                matrix[i].resize(dimension);
+            
             for (int i = 0; i < dimension; i++)
             {
-                matrix[i] = new int[dimension];
                 for (int j = 0; j < dimension; j++)
                 {
                     source >> matrix[i][j];
@@ -170,7 +173,7 @@ vector<int> Tools::getVectorY()
     return y;
 }
 
-int ** Tools::getMatrix()
+vector<vector<int>> Tools::getMatrix()
 {
     return matrix;
 }

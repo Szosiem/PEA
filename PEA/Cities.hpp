@@ -27,14 +27,15 @@ private:
     
     vector<city> cities;
     
-    int ** matrix;
+    vector<vector<int>> citiesA;
 
 public:
     Cities(vector<int> x, vector<int> y);
-    Cities(int ** import);
+    Cities(vector<vector<int>> import);
     ~Cities();
     
     vector<city> getCities();
+    vector<vector<int>> getMatrix();
     
     int getSize();
     

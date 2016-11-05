@@ -19,15 +19,9 @@ Cities::Cities(vector<int> x, vector<int> y)
     }
 }
 
-Cities::Cities(int ** import)
+Cities::Cities(vector<vector<int>> import)
 {
-    matrix = new int*[10];
-    for (int i = 0; i < 10 ; i++) {
-        matrix[i] = new int[10];
-        for (int j = 0; j < 10; j++) {
-            matrix[i][j] = import[i][j];
-        }
-    }
+    this->citiesA.swap(import);
 }
 
 Cities::~Cities()
@@ -38,6 +32,11 @@ Cities::~Cities()
 vector<city> Cities::getCities()
 {
     return this->cities;
+}
+
+vector<vector<int>> Cities::getMatrix()
+{
+    return citiesA;
 }
 
 int Cities::getSize()
