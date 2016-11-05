@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		085315D91DCD403A00F49F1B /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 085315D81DCD403A00F49F1B /* main.cpp */; };
+		085315E11DCD413000F49F1B /* Tools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 085315DF1DCD413000F49F1B /* Tools.cpp */; };
+		085315E71DCD446800F49F1B /* Cities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 085315E51DCD446800F49F1B /* Cities.cpp */; };
+		085315EB1DCD504B00F49F1B /* Path.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 085315E91DCD504A00F49F1B /* Path.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +28,14 @@
 /* Begin PBXFileReference section */
 		085315D51DCD403A00F49F1B /* PEA */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = PEA; sourceTree = BUILT_PRODUCTS_DIR; };
 		085315D81DCD403A00F49F1B /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		085315DF1DCD413000F49F1B /* Tools.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Tools.cpp; sourceTree = "<group>"; };
+		085315E01DCD413000F49F1B /* Tools.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Tools.hpp; sourceTree = "<group>"; };
+		085315E51DCD446800F49F1B /* Cities.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Cities.cpp; sourceTree = "<group>"; };
+		085315E61DCD446800F49F1B /* Cities.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Cities.hpp; sourceTree = "<group>"; };
+		085315E81DCD4BD900F49F1B /* berlin52.tsp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = berlin52.tsp; sourceTree = "<group>"; };
+		085315E91DCD504A00F49F1B /* Path.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Path.cpp; sourceTree = "<group>"; };
+		085315EA1DCD504B00F49F1B /* Path.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Path.hpp; sourceTree = "<group>"; };
+		085315EC1DCD7DF800F49F1B /* br17.atsp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = br17.atsp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,7 +68,15 @@
 		085315D71DCD403A00F49F1B /* PEA */ = {
 			isa = PBXGroup;
 			children = (
+				085315EC1DCD7DF800F49F1B /* br17.atsp */,
+				085315E51DCD446800F49F1B /* Cities.cpp */,
 				085315D81DCD403A00F49F1B /* main.cpp */,
+				085315E91DCD504A00F49F1B /* Path.cpp */,
+				085315DF1DCD413000F49F1B /* Tools.cpp */,
+				085315E61DCD446800F49F1B /* Cities.hpp */,
+				085315EA1DCD504B00F49F1B /* Path.hpp */,
+				085315E01DCD413000F49F1B /* Tools.hpp */,
+				085315E81DCD4BD900F49F1B /* berlin52.tsp */,
 			);
 			path = PEA;
 			sourceTree = "<group>";
@@ -119,6 +138,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				085315D91DCD403A00F49F1B /* main.cpp in Sources */,
+				085315E71DCD446800F49F1B /* Cities.cpp in Sources */,
+				085315EB1DCD504B00F49F1B /* Path.cpp in Sources */,
+				085315E11DCD413000F49F1B /* Tools.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
