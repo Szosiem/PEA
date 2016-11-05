@@ -26,9 +26,12 @@ class Cities
 private:
     
     vector<city> cities;
+    
+    int ** matrix;
 
 public:
     Cities(vector<int> x, vector<int> y);
+    Cities(int ** import);
     ~Cities();
     
     vector<city> getCities();

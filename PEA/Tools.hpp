@@ -28,6 +28,8 @@ private:
     vector <int> x;
     vector <int> y;
     
+    int ** matrix;
+    
 public:
     Tools(string filename);
     ~Tools();
@@ -44,6 +46,7 @@ public:
     
     vector<int> getVectorX();
     vector<int> getVectorY();
+    int ** getMatrix();
 };
 
 #endif /* Tools_hpp */

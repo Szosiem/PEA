@@ -55,6 +55,7 @@ int main(int argc, const char * argv[]) {
     
     string filename;
     bool reading = true;
+    bool tsp;
     Tools *file = nullptr;
     while (reading)
     {
@@ -74,13 +75,24 @@ int main(int argc, const char * argv[]) {
         }
         
     }
-
+    
+    tsp = file->isTSP();
+    
     cout << "##########" << endl;
     cout << "File details:" << endl;
     cout << file->showDetails();
     cout << "##########" << endl;
     
-    Cities *state = new Cities(file->getVectorX(),file->getVectorY());
+    Cities *state = nullptr;
+    
+    if (tsp)
+    {
+        state = new Cities(file->getVectorX(),file->getVectorY());
+    }
+    else
+    {
+        state = new Cities(file->getMatrix());
+    }
     
     bool menu = true;
     

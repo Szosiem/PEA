@@ -26,7 +26,7 @@ int Tools::readFile()
     
     if (source.is_open())
     {
-        for (int i = 0; i < 6; i++)
+        for (int i = 0; i < 4; i++)
         {
             getline(source,line);
             index = line.find(':')+2;
@@ -60,6 +60,10 @@ int Tools::readFile()
                     break;
             }
         }
+        while (line.compare("EDGE_WEIGHT_SECTION") != 0 && line.compare("NODE_COORD_SECTION") != 0) {
+            getline(source, line);
+        }
+        
         if (this->type) {
             for (int i = 0; i < this->dimension; i++) {
                 getline(source,line);
@@ -73,14 +77,24 @@ int Tools::readFile()
         }
         else
         {
-            
+            matrix = new int*[dimension];
+            for (int i = 0; i < dimension; i++)
+            {
+                matrix[i] = new int[dimension];
+                for (int j = 0; j < dimension; j++)
+                {
+                    source >> matrix[i][j];
+                }
+            }
         }
     }
+    
     else
     {
         return -1;
     }
     
+    source.close();
     return 0;
 }
 
@@ -105,6 +119,20 @@ string Tools::printCities()
     }
     else
     {
+        cities += "_|\t";
+        for (int i = 0; i < dimension; i++) {
+            cities += to_string(i+1) + ".\t";
+        }
+        cities += "\n";
+        for (int i = 0; i < dimension; i ++)
+        {
+            cities += to_string(i+1) + ".\t";
+            for (int j = 0; j < dimension; j++)
+            {
+                cities += to_string(matrix[i][j]) + "\t";
+            }
+            cities += "\n";
+        }
         
     }
     
@@ -140,4 +168,9 @@ vector<int> Tools::getVectorX()
 vector<int> Tools::getVectorY()
 {
     return y;
+}
+
+int ** Tools::getMatrix()
+{
+    return matrix;
 }
