@@ -67,6 +67,30 @@ int Path::calculate()
     return this->distance;
 }
 
+int Path::calculateP(vector<int> pathB)
+{
+    double dist = 0;
+    
+    for (int i = 0; i < path.size(); i++)
+    {
+        if (i+1 < path.size())
+        {
+            dist += distanceTo(this->path.at(pathB.at(i)), this->path.at(pathB.at(i+1)));
+        }
+        else
+        {
+            dist += distanceTo(this->path.at(pathB.at(i)), this->path.at(pathB.at(0)));
+        }
+    }
+    
+    if (this->distance == 0 || this->distance > (int)dist) {
+        this->distance = (int)dist;
+    }
+    
+    return distance;
+}
+
+
 int Path::calculateA(vector<vector<int>> matrix)
 {
     double dist = 0;

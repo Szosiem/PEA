@@ -24,7 +24,7 @@ int Tools::readFile()
     string::size_type index;
     ifstream source(this->file);
     
-    if (source.is_open())
+    if (source.good())
     {
         for (int i = 0; i < 4; i++)
         {

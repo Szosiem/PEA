@@ -24,6 +24,7 @@ int showMenu()
     cout << "# 2. Print cities" << endl;
     cout << "#" << endl;
     cout << "# 3. Simulated Annealing" << endl;
+    cout << "# 4. Brute force" << endl;
     cout << "#" << endl;
     cout << "# 0. Exit" << endl;
     cout << "\n\tYour choice : ";
@@ -47,7 +48,6 @@ double decide(int energy, int newEnergy, double temperature)
     return exp((energy - newEnergy)/temperature);
 }
 
-
 int main(int argc, const char * argv[]) {
     // insert code here...
     
@@ -59,8 +59,49 @@ int main(int argc, const char * argv[]) {
     Tools *file = nullptr;
     while (reading)
     {
-        cout << "\n\n\nEnter file name: ";
+        cout << "\n\nType 'gen' to create new instance\nEnter file name: ";
         cin >> filename;
+        
+        if (filename == "gen")
+        {
+            string name, type;
+            int dimension, maxvalue;
+            cout << "Generating file started" << endl;
+            cout << "Please type folowing values..." << endl;
+            cout << "NAME: ";
+            cin >> name;
+            cout << "TSP or ATSP: ";
+            cin >> type;
+            cout << "DIMENSION: ";
+            cin >> dimension;
+            
+            cout << "Type range of vaules : from 0 to ";
+            cin >> maxvalue;
+            
+            ofstream generate;
+            
+            generate.open("/Users/krystian/Desktop/PEA/Generated/" + name  + "." + type);
+            generate << "NAME: " << name << endl;
+            generate << "TYPE: " << type << endl;
+            if (type == "TSP")
+            {
+                generate << "COMMENT: generated file" << endl;
+                generate << "DIMENSION: " << dimension << endl;
+                generate << "EDGE_WEIGHT_TYPE: EUC_2D\nNODE_COORD_SECTION\n";
+                for (int i = 0; i < dimension; i++)
+                {
+                    generate << i+1 << " " << rand() % maxvalue+1 << ".0 " << rand() % maxvalue+1 << ".0" << endl;
+                }
+            }
+            else
+            {
+                
+            }
+            generate << "EOF";
+            generate.close();
+
+            filename = "Generated/" + name + "." + type;
+        }
         
         file = new Tools("/Users/krystian/Desktop/PEA/" + filename);
         
@@ -202,6 +243,44 @@ int main(int argc, const char * argv[]) {
                     }
                     cout << "Best distance is : \t\t" << bestPath->getDistance() << endl;
                     delete bestPath;
+                    delete currentPath;
+                }
+            }
+                break;
+            
+            case 4:
+            {
+                if (tsp)
+                {
+                    Path *currentPath = new Path(state->getCities());
+                    
+                    // create permutation
+                    int array[state->getSize()];
+                    
+                    for (int i = 0; i < state->getSize(); i++) {
+                        array[i]=i;
+                    }
+                    
+                    vector<vector<int>> paths;
+                    
+                    do
+                    {
+                        vector<int> temp;
+                        for (int i = 0 ; i < state->getSize(); i++)
+                        {
+                            temp.push_back(array[i]);
+                        }
+                        paths.push_back(temp);
+
+                    }
+                    while (next_permutation(array,array + state->getSize()));
+                    
+                    for (int i = 0; i < paths.size(); i++)
+                    {
+                        currentPath->calculateP(paths.at(i));
+                    }
+                    
+                    cout << endl << "Best distance is : \t" << currentPath->getDistance() << endl;
                     delete currentPath;
                 }
             }
