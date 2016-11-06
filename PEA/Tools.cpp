@@ -120,25 +120,25 @@ int Tools::readFile()
             }
              */
             int jump = 0;
-            int cord = 0;
             do
             {
+                float temp;
                 if (jump % 3 == 0)
                 {
-                    source >> line;
+                    source >> temp;
                 }
                 else if (jump % 3 == 1)
                 {
-                    source >> cord;
-                    this->x.push_back(cord);
+                    source >> temp;
+                    this->x.push_back((int)temp);
                 }
                 else if (jump % 3 == 2)
                 {
-                    source >> cord;
-                    this->y.push_back(cord);
+                    source >> temp;
+                    this->y.push_back((int)temp);
                 }
                 jump++;
-            }while (line != "EOF");
+            }while (jump < dimension*3);
         }
         else
         {

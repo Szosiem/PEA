@@ -15,6 +15,9 @@
 
 using namespace std;
 
+double temperature = 10000;
+double coolingRate = 0.00001;
+
 int showMenu()
 {
     int choice = 0;
@@ -25,6 +28,8 @@ int showMenu()
     cout << "#" << endl;
     cout << "# 3. Simulated Annealing" << endl;
     cout << "# 4. Brute force" << endl;
+    cout << "#" << endl;
+    cout << "# 9. Settings" << endl;
     cout << "#" << endl;
     cout << "# 0. Exit" << endl;
     cout << "\n\tYour choice : ";
@@ -169,8 +174,8 @@ int main(int argc, const char * argv[]) {
                 
             case 3:
             {
-                double temp = 10000;
-                double coolRate = 0.00001;
+                double temp = temperature;
+                double coolRate = coolingRate;
                 
                 cout << endl << "Starting temperature is " << temp << endl;
                 cout << "Cooling Rate is " << 1-coolRate << endl;
@@ -320,6 +325,16 @@ int main(int argc, const char * argv[]) {
             }
                 break;
             
+            case 9:
+            {
+                cout << endl << "Current temperature: " << temperature;
+                cout << endl << "Current cool rate: " << coolingRate;
+                cout << endl << "New temperature: ";
+                cin >> temperature;
+                cout << "New cool rate: ";
+                cin >> coolingRate;
+            }
+                break;
             /* // report helper
             case 404:
             {
