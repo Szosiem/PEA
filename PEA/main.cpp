@@ -105,14 +105,25 @@ int main(int argc, const char * argv[]) {
         
         file = new Tools("/Users/krystian/Desktop/PEA/" + filename);
         
-        if (file->readFile() != 0)
-        {
-            delete file;
-            cout << "Error while opening file!" << endl;
-        }
-        else
-        {
-            reading = false;
+        switch (file->readFile()) {
+            case 0:
+                reading = false;
+                break;
+            case -1:
+            {
+                delete file;
+                cout << "Error while opening file!" << endl;
+            }
+                break;
+            case -2:
+            {
+                delete file;
+                cout << "Error while opening file! Unsupported file." << endl;
+            }
+                break;
+                
+            default:
+                break;
         }
         
     }

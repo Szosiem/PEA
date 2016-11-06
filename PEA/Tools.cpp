@@ -26,6 +26,7 @@ int Tools::readFile()
     
     if (source.good())
     {
+        /*
         for (int i = 0; i < 4; i++)
         {
             getline(source,line);
@@ -60,11 +61,55 @@ int Tools::readFile()
                     break;
             }
         }
-        while (line.compare("EDGE_WEIGHT_SECTION") != 0 && line.compare("NODE_COORD_SECTION") != 0) {
-            getline(source, line);
-        }
+         */
         
-        if (this->type) {
+        do
+        {
+            getline(source, line);
+            index = line.find(':')+2;
+            
+            string temp = line.substr(0, index-2);
+            
+            temp.erase(remove(temp.begin(), temp.end(),' '));
+            
+            if (temp == "NAME")
+            {
+                this->name = line.substr(index);
+            }
+            else if (temp == "TYPE")
+            {
+                if (line.substr(index) == "TSP")
+                {
+                    this->type = true;
+                }
+                else this->type = false;
+            }
+            else if (temp == "COMMENT")
+            {
+                this->comment = line.substr(index);
+            }
+            else if (temp == "DIMENSION")
+            {
+                this->dimension = stoi(line.substr(index));
+            }
+            else if (temp == "EDGE_WEIGHT_TYPE")
+            {
+                if (this->type)
+                {
+                    if (line.substr(index) != "EUC_2D")
+                    {
+                        return -2;
+                    }
+                }
+            }
+            
+        }while (line.compare("EDGE_WEIGHT_SECTION") != 0 && line.compare("NODE_COORD_SECTION") != 0);
+        
+        
+        
+        if (this->type)
+        {
+            /*
             for (int i = 0; i < this->dimension; i++) {
                 getline(source,line);
                 index = line.find(' ')+1;
@@ -73,7 +118,27 @@ int Tools::readFile()
                 this->x.push_back(stoi(line.substr(0,index-2)));
                 this->y.push_back(stoi(line.substr(index + 1, line.length() - index - 3)));
             }
-
+             */
+            int jump = 0;
+            int cord = 0;
+            do
+            {
+                if (jump % 3 == 0)
+                {
+                    source >> line;
+                }
+                else if (jump % 3 == 1)
+                {
+                    source >> cord;
+                    this->x.push_back(cord);
+                }
+                else if (jump % 3 == 2)
+                {
+                    source >> cord;
+                    this->y.push_back(cord);
+                }
+                jump++;
+            }while (line != "EOF");
         }
         else
         {
@@ -117,7 +182,7 @@ string Tools::printCities()
     
     if (this->type) {
         for (int i = 0; i < this->dimension; i++) {
-            cities += to_string(i) + ".\t" + to_string(x.at(i)) + "\t" + to_string(y.at(i)) + "\n";
+            cities += to_string(i) + ".\t" + to_string(x.at(i)) + "\t\t" + to_string(y.at(i)) + "\n";
         }
     }
     else
