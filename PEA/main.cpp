@@ -159,7 +159,7 @@ int main(int argc, const char * argv[]) {
             case 3:
             {
                 double temp = 10000;
-                double coolRate = 0.0001;
+                double coolRate = 0.00001;
                 
                 cout << endl << "Starting temperature is " << temp << endl;
                 cout << "Cooling Rate is " << 1-coolRate << endl;
@@ -175,6 +175,7 @@ int main(int argc, const char * argv[]) {
                     Path *bestPath = new Path(currentPath->getVector());
                     bestPath->calculate();
                     
+                    clock_t begin = clock();
                     while (temp > 1)
                     {
                         Path *newPath = new Path(currentPath->getVector());
@@ -200,6 +201,11 @@ int main(int argc, const char * argv[]) {
                         temp *= 1 - coolRate;
                         
                     }
+                    float stop = float(clock() - begin) / CLOCKS_PER_SEC;
+                    int sec = int(stop) % 60;
+                    int min = stop / 60;
+                    cout << "Time of execution: " << min << " [min] " << sec << " [s]" << endl;
+                    //cout << "Time of execution: " << float( clock() - begin) / CLOCKS_PER_SEC << " [s]" << endl;
                     cout << "Best distance is : \t\t" << bestPath->getDistance() << endl;
                     delete bestPath;
                     delete currentPath;
@@ -216,6 +222,7 @@ int main(int argc, const char * argv[]) {
                     Path *bestPath = new Path(currentPath->getPath());
                     bestPath->calculateA(state->getMatrix());
                     
+                    clock_t begin = clock();
                     while (temp > 1)
                     {
                         Path *newPath = new Path(currentPath->getPath());
@@ -241,6 +248,10 @@ int main(int argc, const char * argv[]) {
                         temp *= 1 - coolRate;
                         
                     }
+                    float stop = float(clock() - begin) / CLOCKS_PER_SEC;
+                    int sec = int(stop) % 60;
+                    int min = stop / 60;
+                    cout << "Time of execution: " << min << " [min] " << sec << " [s]" << endl;
                     cout << "Best distance is : \t\t" << bestPath->getDistance() << endl;
                     delete bestPath;
                     delete currentPath;
@@ -250,17 +261,18 @@ int main(int argc, const char * argv[]) {
             
             case 4:
             {
+                clock_t begin = clock();
                 if (tsp)
                 {
                     Path *currentPath = new Path(state->getCities());
-                    
+                    int size = state->getSize();
                     // create permutation
-                    int array[state->getSize()];
+                    int array[size];
                     
-                    for (int i = 0; i < state->getSize(); i++) {
+                    for (int i = 0; i < size; i++) {
                         array[i]=i;
                     }
-                    
+                    /*
                     vector<vector<int>> paths;
                     
                     do
@@ -279,7 +291,18 @@ int main(int argc, const char * argv[]) {
                     {
                         currentPath->calculateP(paths.at(i));
                     }
+                    */
                     
+                    do
+                    {
+                        currentPath->calculateP(array, size);
+                        
+                    }while (next_permutation(array, array + size));
+                    
+                    float stop = float(clock() - begin) / CLOCKS_PER_SEC;
+                    int sec = int(stop) % 60;
+                    int min = stop / 60;
+                    cout << "Time of execution: " << min << " [min] " << sec << " [s]" << endl;
                     cout << endl << "Best distance is : \t" << currentPath->getDistance() << endl;
                     delete currentPath;
                 }

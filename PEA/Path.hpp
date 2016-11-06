@@ -32,7 +32,8 @@ public:
     Path(vector<int> newpath, int dist);
     
     int calculate();
-    int calculateP(vector<int> pathB);
+    int calculateP(int * array, int size);
+    //int calculateP(vector<int> pathB);
     int calculateA(vector<vector<int>> matrix);
     double distanceTo(city from, city to);
     void swap(int first, int second);
