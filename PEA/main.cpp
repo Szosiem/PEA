@@ -15,8 +15,9 @@
 
 using namespace std;
 
-double temperature = 10000;
-double coolingRate = 0.00001;
+double temperature = 1000;
+double coolingRate = 0.99;
+int s = 50;
 
 int showMenu()
 {
@@ -37,13 +38,6 @@ int showMenu()
     
     return choice;
 }
-
-/*
-void reportHelper()
-{
-    
-}
-*/
 
 double decide(int energy, int newEnergy, double temperature)
 {
@@ -85,6 +79,7 @@ int main(int argc, const char * argv[]) {
             
             ofstream generate;
             
+            //zeby sciezka dzialala poprawnie w Xcode na Mac OSX trzeba podac pelna sciezke do pliku
             generate.open("/Users/krystian/Desktop/PEA/Generated/" + name  + "." + type);
             generate << "NAME: " << name << endl;
             generate << "TYPE: " << type << endl;
@@ -107,7 +102,7 @@ int main(int argc, const char * argv[]) {
 
             filename = "Generated/" + name + "." + type;
         }
-        
+        //zeby sciezka dzialala poprawnie w Xcode na Mac OSX trzeba podac pelna sciezke do pliku
         file = new Tools("/Users/krystian/Desktop/PEA/" + filename);
         
         switch (file->readFile()) {
@@ -177,8 +172,11 @@ int main(int argc, const char * argv[]) {
                 double temp = temperature;
                 double coolRate = coolingRate;
                 
+                cout << endl << "Parameters : ";
                 cout << endl << "Starting temperature is " << temp << endl;
-                cout << "Cooling Rate is " << 1-coolRate << endl;
+                cout << "Cooling Rate is " << coolRate << endl;
+                cout << "Iterations in temperature: " << s << endl;
+                cout << "***" << endl;
                 
                 if (tsp)
                 {
@@ -194,38 +192,66 @@ int main(int argc, const char * argv[]) {
                     clock_t begin = clock();
                     while (temp > 1)
                     {
-                        Path *newPath = new Path(currentPath->getVector());
-                        
-                        int position1 = (int) (rand() % sizeOfState);
-                        int position2 = (int) (rand() % sizeOfState);
-                        
-                        newPath->swap(position1, position2);
-                        
-                        int currentEnergy = currentPath->calculate();
-                        int neighbourEnergy = newPath->calculate();
-                        
-                        if (decide(currentEnergy, neighbourEnergy, temp) > (double)((rand() % 101 )* 0.01)) {
-                            delete currentPath;
-                            currentPath = new Path(newPath->getVector(), newPath->getDistance());
+                        for (int i = 0; i < s; i++)
+                        {
+                            Path *newPath = new Path(currentPath->getVector());
+                            
+                            int position1 = (int) (rand() % sizeOfState);
+                            int position2 = (int) (rand() % sizeOfState);
+                            
+                            newPath->swap(position1, position2);
+                            
+                            int currentEnergy = currentPath->calculate();
+                            int neighbourEnergy = newPath->calculate();
+                            
+                            if (decide(currentEnergy, neighbourEnergy, temp) > (double)((rand() % 101 )* 0.01)) {
+                                delete currentPath;
+                                currentPath = new Path(newPath->getVector(), newPath->getDistance());
+                            }
+                            
+                            if (currentPath->getDistance() < bestPath->getDistance()) {
+                                delete bestPath;
+                                bestPath = new Path(currentPath->getVector(), currentPath->getDistance());
+                            }
+                            delete newPath;
                         }
-                        
-                        if (currentPath->getDistance() < bestPath->getDistance()) {
-                            delete bestPath;
-                            bestPath = new Path(currentPath->getVector(), currentPath->getDistance());
-                        }
-                        delete newPath;
-                        temp *= 1 - coolRate;
+                        temp *= coolRate;
                         
                     }
-                    float stop = float(clock() - begin) / CLOCKS_PER_SEC;
-                    int sec = int(stop) % 60;
-                    int min = stop / 60;
-                    cout << "Time of execution: " << min << " [min] " << sec << " [s]" << endl;
-                    //cout << "Time of execution: " << float( clock() - begin) / CLOCKS_PER_SEC << " [s]" << endl;
-                    cout << "Best distance is : \t\t" << bestPath->getDistance() << endl;
+                    double stop = double(clock() - begin) / double(CLOCKS_PER_SEC/1000);
+                    int mis = int(stop) % 1000;
+                    int sec = int(stop / 1000) % 60;
+                    int min = (stop/1000) / 60;
+                    cout << "Time of execution: " << min << " [min] " << sec << " [s] " << mis << " [ms]" << endl;
+                    cout << "Best found distance is : \t\t" << bestPath->getDistance() << endl;
+                    cout << "Best path: " << endl;
+                    
+                    for (int i = 0; i < sizeOfState-1; i++)
+                    {
+                        cout << bestPath->getIndex(i) << ", ";
+                    }
+                    cout << bestPath->getIndex(sizeOfState-1);
+                    
+                    cout << endl << "Shortest possible distance: \t";
+                    if (file->getName() == "berlin52")
+                    {
+                        cout << "7542" << endl;
+                    }
+                    else if (file->getName() == "bier127")
+                    {
+                        cout << "118282" << endl;
+                    }
+                    else if (file->getName() == "kroA200")
+                    {
+                        cout << "29368" << endl;
+                    }
+                    else
+                    {
+                        cout << "unknown";
+                    }
+                    
                     delete bestPath;
                     delete currentPath;
-
                 }
                 else
                 {
@@ -241,34 +267,66 @@ int main(int argc, const char * argv[]) {
                     clock_t begin = clock();
                     while (temp > 1)
                     {
-                        Path *newPath = new Path(currentPath->getPath());
-                        
-                        int position1 = (int) (rand() % sizeOfState);
-                        int position2 = (int) (rand() % sizeOfState);
-                        
-                        newPath->swapA(position1, position2);
-                        
-                        int currentEnergy = currentPath->calculateA(state->getMatrix());
-                        int neighbourEnergy = newPath->calculateA(state->getMatrix());
-                        
-                        if (decide(currentEnergy, neighbourEnergy, temp) > (double)((rand() % 101 )* 0.01)) {
-                            delete currentPath;
-                            currentPath = new Path(newPath->getPath(), newPath->getDistance());
+                        for (int i = 0; i < s; i++)
+                        {
+                            Path *newPath = new Path(currentPath->getPath());
+                            
+                            int position1 = (int) (rand() % sizeOfState);
+                            int position2 = (int) (rand() % sizeOfState);
+                            
+                            newPath->swapA(position1, position2);
+                            
+                            int currentEnergy = currentPath->calculateA(state->getMatrix());
+                            int neighbourEnergy = newPath->calculateA(state->getMatrix());
+                            
+                            if (decide(currentEnergy, neighbourEnergy, temp) > (double)((rand() % 101 )* 0.01)) {
+                                delete currentPath;
+                                currentPath = new Path(newPath->getPath(), newPath->getDistance());
+                            }
+                            
+                            if (currentPath->getDistance() < bestPath->getDistance()) {
+                                delete bestPath;
+                                bestPath = new Path(currentPath->getPath(), currentPath->getDistance());
+                            }
+                            delete newPath;
                         }
-                        
-                        if (currentPath->getDistance() < bestPath->getDistance()) {
-                            delete bestPath;
-                            bestPath = new Path(currentPath->getPath(), currentPath->getDistance());
-                        }
-                        delete newPath;
-                        temp *= 1 - coolRate;
+                        temp *= coolRate;
                         
                     }
-                    float stop = float(clock() - begin) / CLOCKS_PER_SEC;
-                    int sec = int(stop) % 60;
-                    int min = stop / 60;
-                    cout << "Time of execution: " << min << " [min] " << sec << " [s]" << endl;
-                    cout << "Best distance is : \t\t" << bestPath->getDistance() << endl;
+                    double stop = double(clock() - begin) / double(CLOCKS_PER_SEC/1000);
+                    int mis = int(stop) % 1000;
+                    int sec = int(stop / 1000) % 60;
+                    int min = (stop/1000) / 60;
+                    cout << "Time of execution: " << min << " [min] " << sec << " [s] " << mis << " [ms]" << endl;
+                    cout << "Best found distance is : \t\t" << bestPath->getDistance() << endl;
+                    
+                    cout << "Best path: " << endl;
+                    
+                    for (int i = 0; i < sizeOfState-1; i++)
+                    {
+                        cout << bestPath->getIndex(i) << ", ";
+                    }
+                    cout << bestPath->getIndex(sizeOfState-1);
+                    
+                    cout << endl << "Shortest possible distance: \t";
+                    if (file->getName() == " br17")
+                    {
+                        cout << "39" << endl;
+                    }
+                    else if (file->getName() == "ftv33")
+                    {
+                        cout << "1286" << endl;
+                    }
+                    else if (file->getName() == "kro124p")
+                    {
+                        cout << "36230" << endl;
+                    }
+                    else
+                    {
+                        cout << "unknown";
+                    }
+                    
+                    
                     delete bestPath;
                     delete currentPath;
                 }
@@ -288,38 +346,18 @@ int main(int argc, const char * argv[]) {
                     for (int i = 0; i < size; i++) {
                         array[i]=i;
                     }
-                    /*
-                    vector<vector<int>> paths;
-                    
-                    do
-                    {
-                        vector<int> temp;
-                        for (int i = 0 ; i < state->getSize(); i++)
-                        {
-                            temp.push_back(array[i]);
-                        }
-                        paths.push_back(temp);
-
-                    }
-                    while (next_permutation(array,array + state->getSize()));
-                    
-                    for (int i = 0; i < paths.size(); i++)
-                    {
-                        currentPath->calculateP(paths.at(i));
-                    }
-                    */
-                    
                     do
                     {
                         currentPath->calculateP(array, size);
                         
                     }while (next_permutation(array, array + size));
                     
-                    float stop = float(clock() - begin) / CLOCKS_PER_SEC;
-                    int sec = int(stop) % 60;
-                    int min = stop / 60;
-                    cout << "Time of execution: " << min << " [min] " << sec << " [s]" << endl;
-                    cout << endl << "Best distance is : \t" << currentPath->getDistance() << endl;
+                    double stop = double(clock() - begin) / double(CLOCKS_PER_SEC/1000);
+                    int mis = int(stop) % 1000;
+                    int sec = int(stop / 1000) % 60;
+                    int min = (stop/1000) / 60;
+                    cout << "Time of execution: " << min << " [min] " << sec << " [s] " << mis << " [ms]" << endl;
+                    cout << "Best found distance is : \t" << currentPath->getDistance() << endl;
                     delete currentPath;
                 }
             }
@@ -329,19 +367,32 @@ int main(int argc, const char * argv[]) {
             {
                 cout << endl << "Current temperature: " << temperature;
                 cout << endl << "Current cool rate: " << coolingRate;
+                cout << endl << "Iterations in temperature: " << s;
                 cout << endl << "New temperature: ";
                 cin >> temperature;
                 cout << "New cool rate: ";
                 cin >> coolingRate;
+                cout << "Iterations in temperature: " << endl << "1. 50" << endl << "2. Number of cities" << endl << "3. (Number of cities)^2/4" << endl << "Choice : ";
+                cin >> s;
+                switch (s) {
+                    case 1:
+                        s = 50;
+                        break;
+                        
+                    case 2:
+                        s = file->getDimension();
+                        break;
+                        
+                    case 3:
+                        s = (int)(pow(file->getDimension(), 2)/ 4);
+                        break;
+                        
+                    default:
+                        s = 50;
+                        break;
+                }
             }
                 break;
-            /* // report helper
-            case 404:
-            {
-                reportHelper();
-            }
-                break;
-            */
                 
             default:
                 cout << endl << "Wrong choice. Try again." << endl;

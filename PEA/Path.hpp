@@ -41,6 +41,7 @@ public:
     
     vector<city> getVector();
     vector<int> getPath();
+    int getIndex(int index);
     int getDistance();
     
 };

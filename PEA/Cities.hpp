@@ -19,6 +19,7 @@ struct city
 {
     int x;
     int y;
+    int i;
 };
 
 class Cities

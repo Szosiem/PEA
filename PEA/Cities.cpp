@@ -14,7 +14,7 @@ Cities::Cities(vector<int> x, vector<int> y)
     for (int i = 0; i < x.size(); i++) {
         temporary.x = x.at(i);
         temporary.y = y.at(i);
-        
+        temporary.i = i;
         this->cities.push_back(temporary);
     }
 }

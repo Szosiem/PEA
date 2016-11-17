@@ -26,42 +26,6 @@ int Tools::readFile()
     
     if (source.good())
     {
-        /*
-        for (int i = 0; i < 4; i++)
-        {
-            getline(source,line);
-            index = line.find(':')+2;
-            switch (i)
-            {
-                case 0:
-                    this->name = line.substr(index);
-                    break;
-                    
-                case 1:
-                {
-                    if (line.substr(index) == "TSP") {
-                        this->type = true;
-                    }
-                    else
-                    {
-                        this->type = false;
-                    }
-                }
-                    break;
-                    
-                case 2:
-                    this->comment = line.substr(index);
-                    break;
-                    
-                case 3:
-                    this->dimension = stoi(line.substr(index));
-                    break;
-                    
-                default:
-                    break;
-            }
-        }
-         */
         
         do
         {
@@ -109,16 +73,6 @@ int Tools::readFile()
         
         if (this->type)
         {
-            /*
-            for (int i = 0; i < this->dimension; i++) {
-                getline(source,line);
-                index = line.find(' ')+1;
-                line = line.substr(index);
-                index = line.find(' ');
-                this->x.push_back(stoi(line.substr(0,index-2)));
-                this->y.push_back(stoi(line.substr(index + 1, line.length() - index - 3)));
-            }
-             */
             int jump = 0;
             do
             {
@@ -226,6 +180,11 @@ int Tools::getDimension()
 bool Tools::isTSP()
 {
     return this->type;
+}
+
+string Tools::getName()
+{
+    return this->name;
 }
 
 vector<int> Tools::getVectorX()

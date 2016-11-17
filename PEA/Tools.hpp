@@ -43,6 +43,7 @@ public:
     int getX(int index);
     int getY(int index);
     bool isTSP();
+    string getName();
     
     vector<int> getVectorX();
     vector<int> getVectorY();

@@ -10,21 +10,21 @@
 
 Path::Path(vector<city> import)
 {
-    this->tsp = false;
+    this->tsp = true;
     this->distance = 0;
     this->path.swap(import);
 }
 
 Path::Path(vector<city> import, int dist)
 {
-    this->tsp = false;
+    this->tsp = true;
     this->distance = dist;
     this->path.swap(import);
 }
 
 Path::Path(int dimension)
 {
-    this->tsp = true;
+    this->tsp = false;
     this->distance = 0;
     this->apath.resize(dimension);
     for (int i = 0; i < dimension; i++)
@@ -35,14 +35,14 @@ Path::Path(int dimension)
 
 Path::Path(vector<int> import)
 {
-    this->tsp = true;
+    this->tsp = false;
     this->distance = 0;
     this->apath.swap(import);
 }
 
 Path::Path(vector<int> newpath, int dist)
 {
-    this->tsp = true;
+    this->tsp = false;
     this->distance = dist;
     this->apath.swap(newpath);
 }
@@ -66,30 +66,7 @@ int Path::calculate()
     
     return this->distance;
 }
-/*
-int Path::calculateP(vector<int> pathB)
-{
-    double dist = 0;
-    
-    for (int i = 0; i < path.size(); i++)
-    {
-        if (i+1 < path.size())
-        {
-            dist += distanceTo(this->path.at(pathB.at(i)), this->path.at(pathB.at(i+1)));
-        }
-        else
-        {
-            dist += distanceTo(this->path.at(pathB.at(i)), this->path.at(pathB.at(0)));
-        }
-    }
-    
-    if (this->distance == 0 || this->distance > (int)dist) {
-        this->distance = (int)dist;
-    }
-    
-    return distance;
-}
-*/
+
 
 int Path::calculateP(int *array, int size)
 {
@@ -168,6 +145,20 @@ vector<city> Path::getVector()
 vector<int> Path::getPath()
 {
     return apath;
+}
+
+int Path::getIndex(int index)
+{
+    if (tsp)
+    {
+        city temporary;
+        temporary = this->path.at(index);
+        return temporary.i;
+    }
+    else
+    {
+        return this->apath.at(index);
+    }
 }
 
 int Path::getDistance()
